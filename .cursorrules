@@ -1,0 +1,213 @@
+# Project Instructions
+
+Use specification and guidelines as you build the app.
+
+Write the complete code for every step. Do not get lazy.
+
+Your goal is to completely finish whatever I ask for.
+
+When running code on the terminal, NEVER double up tasks in 1 command (i.e. using "&&") it never works. Do commands 1 at a time.
+
+### // React Native Expo best practices
+
+const reactNativeExpoBestPractices = [
+  "Use functional components with hooks",
+  "Utilize Expo SDK features and APIs",
+  "Implement proper navigation using React Navigation",
+  "Use Expo's asset system for images and fonts",
+  "Implement proper error handling and crash reporting",
+  "Utilize Expo's push notification system",
+];
+
+// Folder structure
+
+const folderStructure = `
+assets/
+src/
+  components/
+  screens/
+  navigation/
+  hooks/
+  utils/
+App.js
+app.json
+`;
+
+// Additional instructions
+
+const additionalInstructions = `
+1. Use TypeScript for type safety
+2. Implement proper styling using StyleSheet
+3. Utilize Expo's vector icons
+4. Use Expo's secure store for sensitive data
+5. Implement proper offline support
+6. Follow React Native best practices for performance
+7. Use Expo's OTA updates for quick deployments
+`;
+
+## Preumptive Note of Vital Importance: When debugging, the fundamental principle is to prioritize the investigation of backend systems as the potential root cause of any issue before dissecting client-side code. This prevents premature and often incorrect assumptions about the source of an error.
+
+## Rule #1: Assume Backend Causality as the Default Hypothesis
+Before analyzing any frontend code, your initial assumption must always be that the problem originates from the backend. Do not treat the frontend code as faulty until you have systematically ruled out backend issues. Your primary function in a debugging scenario is to first validate the entire data pipeline that feeds the client.
+
+## Rule #2: Conduct a Rigorous Data Integrity and Structural Audit
+Your immediate action when presented with a bug is to investigate the data being sent from the backend to the client. This audit must be thorough and check for the following common failures:
+
+Data Structure Misalignment: This is the most common cause of frontend errors.
+
+Action: Compare the structure of the live API response (the actual data being sent) against the expected structure on the client (e.g., TypeScript interfaces, component prop types, or object handling logic).
+Checklist:
+-Are there missing or extraneous fields?
+-Are field names correct (e.g., camelCase vs. snake_case)?
+-Is the data nesting depth correct?
+-Are arrays being sent where objects are expected, or vice versa?
+Data Type Mismatch:
+
+Action: Verify that the data types of individual fields in the response match the types the frontend code expects.
+Checklist:
+Is a number being sent as a string (e.g., price: "99.99")?
+Is a boolean represented as true or "true"?
+Is a null value being sent when the frontend expects a default value (e.g., an empty array [])?
+Malformed or Incomplete Data:
+
+Action: Assess if the backend logic itself is flawed, leading to bad data being sent.
+Checklist:
+- [ ] Is the JSON response valid?
+- [ ] Is the data incomplete due to a faulty database query or business logic error?
+- [ ] Is the API returning an error message (like an HTML error page) instead of the expected JSON?
+## Rule #3: Proactively Propose and Draft Backend Solutions
+Identifying the backend issue is only half the task. You must then propose concrete, actionable changes to the backend codebase to rectify the problem.
+
+Specify API Contract Changes: Clearly define what the correct API response should look like.
+Generate Backend Code: Provide specific code modifications for the relevant backend files (e.g., API controllers, serializers, database models, or services) to implement the fix.
+Recommend Safeguards: Suggest adding or improving backend data validation (e.g., using DTOs or validation libraries) to prevent similar issues from occurring in the future.
+
+
+## Rules
+
+Follow these rules when building the app.
+
+### General Rules
+
+- Use `@` to import anything from the app unless otherwise specified
+- Use kebab case for all files and folders unless otherwise specified
+- Don't update shadcn components unless otherwise specified
+
+#### Env Rules
+
+- If you update environment variables, update the `.env.example` file
+- All environment variables should go in `.env.local`
+- Do not expose environment variables to the frontend
+- Use `NEXT_PUBLIC_` prefix for environment variables that need to be accessed from the frontend
+- You may import environment variables in server actions and components by using `process.env.VARIABLE_NAME`
+
+
+
+
+#### Components
+
+- Use divs instead of other html tags unless otherwise specified
+- Separate the main parts of a component's html with an extra blank line for visual spacing
+- Always tag a component with either `use server` or `use client` at the top, including layouts and pages
+
+##### Organization
+
+- All components be named using kebab case like `example-component.tsx` unless otherwise specified
+- Put components in `/_components` in the route if one-off components
+- Put components in `/components` from the root if shared components
+
+### Backend Rules
+
+Follow these rules when working on the backend.
+
+It uses Firebase Firestore and Firebase Storage.
+
+#### Organization
+
+#### Database (Firestore)
+
+- Collections are defined in `db/db.ts`
+- Use the `collections` object to reference collection names
+- Always include proper error handling
+- Use transactions for operations that need to be atomic
+
+Example of Firestore operations:
+
+```ts
+// Creating a document
+const docRef = await db.collection(collections.profiles).add(data)
+
+// Getting a document
+const doc = await db.collection(collections.profiles).doc(id).get()
+
+// Querying documents
+const snapshot = await db
+  .collection(collections.profiles)
+  .where('userId', '==', userId)
+  .get()
+
+// Updating a document
+await db.collection(collections.profiles).doc(id).update(data)
+
+// Deleting a document
+await db.collection(collections.profiles).doc(id).delete()
+```
+
+#### Server Actions
+
+- When importing actions, use `@/actions` or `@/actions/db` if db related
+- DB related actions should go in the `actions/db` folder
+- Storage related actions should go in the `actions/storage` folder
+- Other actions should go in the `actions` folder
+- Name files like `example-actions.ts`
+- All actions should go in the `actions` folder
+- Only write the needed actions
+- Return an ActionState with the needed data type from actions
+- Include Action at the end of function names `Ex: exampleFunction -> exampleFunctionAction`
+- Actions should return a Promise<ActionState<T>>
+- Sort in CRUD order: Create, Read, Update, Delete
+- Make sure to return undefined as the data type if the action is not supposed to return any data
+
+```ts
+export type ActionState<T> =
+  | { isSuccess: true; message: string; data: T }
+  | { isSuccess: false; message: string; data?: never }
+```
+
+Example of an action:
+
+`actions/db/profiles-actions.ts`
+
+```ts
+"use server"
+
+import { db, collections } from "@/db/db"
+import { FirebaseProfile } from "@/types/firebase-types"
+import { ActionState } from "@/types"
+import { FieldValue } from 'firebase-admin/firestore'
+
+export async function createProfileAction(
+  data: Omit<FirebaseProfile, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<ActionState<FirebaseProfile>> {
+  try {
+    const profileData = {
+      ...data,
+      createdAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp()
+    }
+    
+    const docRef = await db.collection(collections.profiles).add(profileData)
+    const newProfile = await docRef.get()
+    const profileWithId = { id: docRef.id, ...newProfile.data() } as FirebaseProfile
+    
+    return {
+      isSuccess: true,
+      message: "Profile created successfully",
+      data: profileWithId
+    }
+  } catch (error) {
+    console.error("Error creating profile:", error)
+    return { isSuccess: false, message: "Failed to create profile" }
+  }
+}
+```

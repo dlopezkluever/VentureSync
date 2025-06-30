@@ -1,0 +1,45 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# backend
+backend/node_modules/
+backend/.env
+
+frontend/firebaseConfig.json
+firebaseConfig.json
+# frontend
+frontend/node_modules/
+
+frontend/dist/
+frontend/web-build/
+
+# dependencies
+frontend/node_modules/
+node_modules
+# Expo
+
+frontend/dist/
+frontend/web-build/
+
+# Native
+frontend/*.orig.*
+frontend/*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
