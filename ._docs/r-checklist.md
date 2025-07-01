@@ -12,24 +12,24 @@
 
 **Objective:** To fix the critical warnings in the current clone codebase and establish a truly stable foundation.
 
-* **\[ \] Task 1: Fix Dependency Mismatches**  
+* **\[ X] Task 1: Fix Dependency Mismatches**  
   * **Action:** In the `frontend` directory, run the command `npx expo install --fix`. This will analyze the `package.json` and install the correct, compatible versions for all Expo-related packages, resolving version conflicts.  
-* **\[ \] Task 2: Implement Authentication Persistence**  
+* **\[ X] Task 2: Implement Authentication Persistence**  
   * **Action:** In the `frontend` directory, run `npx expo install @react-native-async-storage/async-storage`.  
   * **Action (Cursor):** Modify `frontend/firebaseConfig.ts`. We will import `initializeAuth`, `getReactNativePersistence`, and `ReactNativeAsyncStorage`. We will then replace the simple `getAuth(app)` call with the full initialization object that includes persistence, as specified in the Firebase warning logs.  
   * **Verification:** After this change, the `You are initializing Firebase Auth... without providing AsyncStorage` warning must be gone.  
-* **\[ \] Task 3: Resolve Navigation Warnings**  
+* **\[ X] Task 3: Resolve Navigation Warnings**  
   * **Action (Cursor):** Refactor the imports in `src/navigation/feed/index.tsx`, `src/screens/feed/index.tsx`, and `src/screens/profile/index.tsx` to break the "require cycle" warnings. This will involve ensuring screens do not import their parent navigators directly, and instead receive the `navigation` prop.
 
 ### **Phase 1: The Dynamic Resume & Core Social UI**
 
 **Objective:** Transform the basic user profile into a rich, professional summary and build out the essential social interaction UIs.
 
-* **\[ \] Task 1: Data Model Expansion**  
+* **\[ X] Task 1: Data Model Expansion**  
   * **Action (Us):** Define the new fields to be added to the `users` collection in Firestore. This must include: `designation` (string),  `speciality`(string) `bio` (string) `workExperience` (array of objects), `education` (array of objects), `topSkills` (array of strings), `externalURLs` (array of strings).  
     * Note: designation is either “Investor” “Visionary” or “Talent”  
     * Note: External links : To personal website, github, linkedin, youtube, etc.  
-  * **Action (Cursor):** Update the `updateUserProfile` function in the clone's user service file to accept an object containing these new fields and merge them into the user's Firestore document.  
+  * **Action (Cursor):** Update the `updateUserProfile` function in the user service file to accept an object containing these new fields and merge them into the user's Firestore document.  
 * **\[ \] Task 2: Build the "Edit Profile" Experience**  
   * **Action (Cursor):** Create a new file: `src/screens/profile/EditProfileScreen.js`.  
   * **Action (Cursor):** This screen will be a `<ScrollView>` containing a form with `<TextInput>` components for every new field defined in Task 1\.  
@@ -39,6 +39,8 @@
   * **Action (Cursor):** Heavily modify `UserProfileScreen.js` to display all the new career data.  
   * **Action (Cursor):** Build the "Expandable Details Section". When expanded, it will map over the `workExperience`, `education`, and `topSkills` arrays from the user's profile and render them. Links must be tappable via `Linking.openURL()`.  
   * **Action (Cursor):** Build the **User List Pop-up Modal**. Implement the functionality where tapping the "Network," "Circle," or "Watching" labels on a profile opens a modal displaying a list of users. For now, this can be populated with dummy data.  
+
+  XX SKIP XX
 * **\[ \] Task 4: Implement Bookmarks Button**  
   * **Action (Cursor):** In the `PostCard.js` component (or its equivalent in the clone), add the "Bookmark" icon button to the vertical stack of interaction buttons.  
   * **Functionality:** For this phase, tapping the button will simply toggle a local state, change the icon's color to indicate selection, and log `"Post bookmarked"` to the console.
@@ -50,10 +52,14 @@
 * **\[ \] Task 1: Build the `HomeFeedScreen.js` UI**  
   * **Action (Cursor):** The screen's root will be a `<FlatList>` configured with `pagingEnabled={true}` and `showsVerticalScrollIndicator={false}` to create the TikTok-style vertical swipe feed.  
   * **Action (Cursor):** Implement the `onViewableItemsChanged` prop on the `<FlatList>` to track which post is currently visible, which will be used to control video playback.  
+
+
 * **\[ \] Task 2: Build the `PostCard.js` Component**  
   * **Action (Cursor):** This component will receive a `post` object and an `isCurrentlyVisible` boolean as props.  
   * **Action (Cursor):** It will conditionally render either a `<Video>` component (from `expo-av`) or a simple `<Image>` based on the `post.type`. The video's `shouldPlay` prop must be tied to `isCurrentlyVisible`.  
-  * **Action (Cursor):** Build the UI overlay, including the username, caption, and all interaction buttons (Like, Dislike, Bookmark, Share, Message, SLOP).  
+  * **Action (Cursor):** Build the UI overlay, including the username, caption, and all interaction buttons (Like, Dislike, Bookmark, Share, Message, SLOP).
+
+  XX Skip XX -- instead make it just so the search works
 * **\[ \] Task 3: Build the `NetworkPageScreen.js` UI Skeleton**  
   * **Action (Cursor):** At the top of the screen, add the "Smart Search" `TextInput` placeholder.  
   * **Action (Cursor):** Below search, add a `ScrollView` containing placeholders for the "Updates" (Stories) reel and "The Latest" (Posts) grid.  
@@ -65,7 +71,8 @@
 
 * **\[ \] Task 1: Implement Core Messaging UI**  
   * **Action (Cursor):** Add a "Message" button to other users' profiles.  
-  * **Action (Cursor):** This button will navigate to a dedicated `ChatScreen.js`. We will build this screen with an inverted `<FlatList>`, a `MessageBubble` component, and a `TextInput` bar.  
+  * **Action (Cursor):** This button will navigate to a dedicated `ChatScreen.js`. We will build this screen with an inverted `<FlatList>`, a `MessageBubble` component, and a `TextInput` bar.
+
 * **\[ \] Task 2: Implement DM Media Upload**  
   * **Action (Cursor):** Add an "Upload" icon inside the `ChatScreen.js` text input bar. Tapping it will open the device's image/video library using `expo-image-picker`.  
   * **Action (Cursor):** Implement the logic to upload the selected file to `/direct_messages/{chatId}/{fileName}` in Firebase Storage.  

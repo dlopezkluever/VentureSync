@@ -27,7 +27,7 @@ const ChatListItem = ({ chat }: { chat: Chat }) => {
       {userData && userData.photoURL ? (
         <Image style={styles.image} source={{ uri: userData.photoURL }} />
       ) : (
-        <Avatar.Icon size={60} icon={"account"} />
+        <Avatar.Icon size={60} icon={"account"} style={{ backgroundColor: "#FFC20E" }} />
       )}
       <View style={{ flex: 1 }}>
         {userData && (

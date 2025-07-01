@@ -13,6 +13,13 @@ const styles = StyleSheet.create({
     color: "#002A5C", // Navy Blue text
     textAlign: "center",
   },
+  headerText: {
+    fontWeight: "bold",
+    fontSize: 28,
+    marginBottom: 20,
+    color: "#002A5C", // Navy Blue text
+    textAlign: "center",
+  },
   providerButton: {
     borderColor: "#0080C6", // Powder Blue for engaging provider buttons
     borderWidth: 1,

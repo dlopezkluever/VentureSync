@@ -13,16 +13,42 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "VentureSync needs access to your camera to take profile pictures and create content.",
+        "NSPhotoLibraryUsageDescription": "VentureSync needs access to your photo library to select profile pictures and media."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "VentureSync needs access to your camera to take photos and videos."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "VentureSync needs access to your photos to select images.",
+          "savePhotosPermission": "VentureSync needs permission to save photos to your library.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ]
   }
 }

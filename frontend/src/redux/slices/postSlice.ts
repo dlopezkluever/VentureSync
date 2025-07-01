@@ -53,13 +53,13 @@ export const createPost = createAsyncThunk(
           ),
         ]);
 
-        await addDoc(collection(FIREBASE_DB, "post"), {
+        await addDoc(collection(FIREBASE_DB, "posts"), {
           creator: FIREBASE_AUTH.currentUser.uid,
-          media: [videoDownloadUrl, thumbnailDownloadUrl],
-          description,
+          caption: description,
+          mediaUrl: videoDownloadUrl,
+          creation: serverTimestamp(),
           likesCount: 0,
           commentsCount: 0,
-          creation: serverTimestamp(),
         });
       } catch (error) {
         console.error("Error creating post: ", error);
@@ -77,7 +77,7 @@ export const getPostsByUser = createAsyncThunk(
     try {
       // Create a query against the collection.
       const q = query(
-        collection(FIREBASE_DB, "post"),
+        collection(FIREBASE_DB, "posts"),
         where("creator", "==", uid),
         orderBy("creation", "desc"),
       );
@@ -88,7 +88,15 @@ export const getPostsByUser = createAsyncThunk(
       const posts = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         const id = doc.id;
-        return { id, ...data } as Post;
+        return { 
+          id, 
+          creator: data.creator,
+          description: data.caption,
+          media: [data.mediaUrl],
+          creation: data.creation,
+          likesCount: data.likesCount || 0,
+          commentsCount: data.commentsCount || 0,
+        } as Post;
       });
       // Dispatch action to update the state. Replace `CURRENT_USER_POSTS_UPDATE` with the actual action creator
       dispatch({ type: "CURRENT_USER_POSTS_UPDATE", payload: posts });

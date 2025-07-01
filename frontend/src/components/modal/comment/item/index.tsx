@@ -17,7 +17,7 @@ const CommentItem = ({ item }: { item: Comment }) => {
           source={{ uri: user.photoURL }}
         />
       ) : (
-        <Avatar.Icon size={32} icon={"account"} />
+        <Avatar.Icon size={32} icon={"account"} style={{ backgroundColor: "#FFC20E" }} />
       )}
       <View style={styles.containerText}>
         {user && (

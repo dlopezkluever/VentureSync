@@ -28,14 +28,22 @@ export const getFeed = (): Promise<Post[]> => {
   return new Promise(async (resolve, reject) => {
     try {
       const q = query(
-        collection(FIREBASE_DB, "post"),
+        collection(FIREBASE_DB, "posts"),
         orderBy("creation", "desc"),
       );
       const querySnapshot = await getDocs(q);
       const posts = querySnapshot.docs.map((doc) => {
         const id = doc.id;
         const data = doc.data();
-        return { id, ...data } as Post;
+        return { 
+          id, 
+          creator: data.creator,
+          description: data.caption,
+          media: [data.mediaUrl],
+          creation: data.creation,
+          likesCount: data.likesCount || 0,
+          commentsCount: data.commentsCount || 0,
+        } as Post;
       });
       resolve(posts);
     } catch (error) {
@@ -55,7 +63,7 @@ export const getFeed = (): Promise<Post[]> => {
 export const getLikeById = async (postId: string, uid: string) => {
   try {
     const likeDoc = await getDoc(
-      doc(FIREBASE_DB, "post", postId, "likes", uid),
+      doc(FIREBASE_DB, "posts", postId, "likes", uid),
     );
     return likeDoc.exists();
   } catch (error) {
@@ -74,7 +82,7 @@ export const updateLike = async (
   uid: string,
   currentLikeState: boolean,
 ) => {
-  const likeDocRef = doc(FIREBASE_DB, "post", postId, "likes", uid);
+  const likeDocRef = doc(FIREBASE_DB, "posts", postId, "likes", uid);
 
   try {
     if (currentLikeState) {
@@ -93,7 +101,7 @@ export const addComment = async (
   comment: string,
 ) => {
   try {
-    await addDoc(collection(FIREBASE_DB, "post", postId, "comments"), {
+    await addDoc(collection(FIREBASE_DB, "posts", postId, "comments"), {
       creator,
       comment,
       creation: serverTimestamp(),
@@ -108,7 +116,7 @@ export const commentListener = (
   setCommentList: Dispatch<SetStateAction<Comment[]>>,
 ) => {
   const commentsQuery = query(
-    collection(FIREBASE_DB, "post", postId, "comments"),
+    collection(FIREBASE_DB, "posts", postId, "comments"),
     orderBy("creation", "desc"),
   );
 
@@ -144,7 +152,7 @@ export const getPostsByUserId = (
     }
 
     const q = query(
-      collection(FIREBASE_DB, "post"),
+      collection(FIREBASE_DB, "posts"),
       where("creator", "==", uid),
       orderBy("creation", "desc"),
     );
@@ -153,7 +161,15 @@ export const getPostsByUserId = (
       let posts = snapshot.docs.map((doc) => {
         const data = doc.data();
         const id = doc.id;
-        return { id, ...data } as Post;
+        return { 
+          id, 
+          creator: data.creator,
+          description: data.caption,
+          media: [data.mediaUrl],
+          creation: data.creation,
+          likesCount: data.likesCount || 0,
+          commentsCount: data.commentsCount || 0,
+        } as Post;
       });
       resolve(posts);
     });

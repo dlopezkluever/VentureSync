@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   image: {
-    backgroundColor: "#8f8f8f",
+    backgroundColor: "#FFC20E",
     height: 60,
     aspectRatio: 1,
     borderRadius: 30,

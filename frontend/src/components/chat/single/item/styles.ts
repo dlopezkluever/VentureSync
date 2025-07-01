@@ -36,5 +36,19 @@ const styles = StyleSheet.create({
     color: "#8f8f8f",
     fontSize: 13,
   },
+  mediaContainer: {
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  imageMessage: {
+    width: 200,
+    height: 150,
+    borderRadius: 8,
+  },
+  videoMessage: {
+    width: 200,
+    height: 150,
+    borderRadius: 8,
+  },
 });
 export default styles;

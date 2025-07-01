@@ -1,4 +1,4 @@
-import { FlatList, View, Dimensions, ViewToken } from "react-native";
+import { FlatList, View, Dimensions, ViewToken, Text, ActivityIndicator } from "react-native";
 import styles from "./styles";
 import PostSingle, { PostSingleHandles } from "../../components/general/post";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -38,15 +38,32 @@ export default function FeedScreen({ route }: { route: FeedScreenRouteProp }) {
   };
 
   const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const mediaRefs = useRef<Record<string, PostSingleHandles | null>>({});
 
   useEffect(() => {
-    if (profile && creator) {
-      getPostsByUserId(creator).then((posts) => setPosts(posts));
-    } else {
-      getFeed().then((posts) => setPosts(posts));
-    }
-  }, []);
+    const loadPosts = async () => {
+      try {
+        setIsLoading(true);
+        let loadedPosts: Post[] = [];
+        
+        if (profile && creator) {
+          loadedPosts = await getPostsByUserId(creator);
+        } else {
+          loadedPosts = await getFeed();
+        }
+        
+        setPosts(loadedPosts);
+      } catch (error) {
+        console.error("Error loading posts:", error);
+        setPosts([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadPosts();
+  }, [profile, creator]);
 
   /**
    * Called any time a new post is shown when a user scrolls
@@ -74,6 +91,7 @@ export default function FeedScreen({ route }: { route: FeedScreenRouteProp }) {
 
   const feedItemHeight =
     Dimensions.get("window").height - useMaterialNavBarHeight(profile);
+  
   /**
    * renders the item shown in the FlatList
    *
@@ -97,6 +115,35 @@ export default function FeedScreen({ route }: { route: FeedScreenRouteProp }) {
     );
   };
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <View style={[styles.container, styles.centerContent]}>
+        <ActivityIndicator size="large" color="#0080C6" />
+        <Text style={styles.loadingText}>
+          {profile ? "Loading posts..." : "Discovering amazing content..."}
+        </Text>
+      </View>
+    );
+  }
+
+  // Empty state
+  if (posts.length === 0) {
+    return (
+      <View style={[styles.container, styles.centerContent]}>
+        <Text style={styles.emptyTitle}>
+          {profile ? "No Posts Yet" : "Welcome to VentureSync!"}
+        </Text>
+        <Text style={styles.emptySubtitle}>
+          {profile 
+            ? "This user hasn't shared any content yet." 
+            : "Start following professionals to see their amazing work here."
+          }
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -113,6 +160,7 @@ export default function FeedScreen({ route }: { route: FeedScreenRouteProp }) {
         keyExtractor={(item) => item.id}
         decelerationRate={"fast"}
         onViewableItemsChanged={onViewableItemsChanged.current}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

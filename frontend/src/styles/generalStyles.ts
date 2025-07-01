@@ -8,7 +8,7 @@ const generalStyles = StyleSheet.create({
     paddingVertical: 5,
   },
   avatarSmall: {
-    backgroundColor: "#8f8f8f",
+    backgroundColor: "#FFC20E",
     height: 32,
     width: 32,
     borderRadius: 16,

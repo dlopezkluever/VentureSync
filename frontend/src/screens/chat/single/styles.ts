@@ -19,6 +19,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingHorizontal: 10,
   },
+  uploadButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: "#F0F8FF",
+    borderWidth: 1,
+    borderColor: "#0080C6",
+  },
 });
 
 export default styles;

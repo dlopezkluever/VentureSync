@@ -79,4 +79,10 @@ export interface Message {
   id: string;
   creator: string;
   message: string;
+  mediaType?: string;
+  isMedia?: boolean;
+  creation?: {
+    seconds?: number;
+    nanoseconds?: number;
+  };
 }

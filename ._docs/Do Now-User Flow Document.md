@@ -22,16 +22,21 @@
 
 ## **2\. Profile Completion Flow (The New "Onboarding")**
 
-**Goal:** Allow a new user to start using the app immediately and prompt them to complete their professional profile at their own convenience.
+**Goal:** Allow users to complete their professional profile using a simple, always-accessible edit profile system.
 
 1. A new user, now inside the app, navigates to their own **Profile Screen**.  
-2. The screen's logic detects that the profile is incomplete (e.g., the `displayName` is still the default value, or essential fields like `workExperience` are missing).  
-3. A prominent **"Complete Your Profile"** or **"Edit Profile"** button/banner is displayed to the user.  
-4. The user taps this button and is navigated to the **Edit Profile Screen**.  
-5. On this screen, the user can fill out all their detailed career information as defined in the project checklist: designation, speciality, bio, work experience, education, skills, and external URLs.  
+2. The screen displays their basic information (default username, email, empty fields, etc.).  
+3. An **"Edit Profile"** button is **always visible** when viewing your own profile (and never appears when viewing others' profiles).  
+4. The user taps the **"Edit Profile"** button and is navigated to the **Edit Profile Screen**.  
+5. On this screen, the user can fill out their VentureSync professional information:
+   - **Display name, designation, specialty, and bio**
+   - **Top skills** (with easy add/remove interface)
+   - **External URLs** (LinkedIn, GitHub, portfolio, etc.)
+   - **Profile picture** (with Camera/Photo Library choice dialog)
+   - **Placeholders** for work experience and education (coming soon)
 6. After filling out the form, the user taps "Save".  
-7. The `updateUserProfile` function saves all the new information to their document in Firestore.  
-8. The user is navigated back to their Profile Screen, which now renders with all of their complete professional details.
+7. The `updateUserProfile` function saves all the new information to their Firestore document.  
+8. The user is navigated back to their Profile Screen, which now displays their complete professional information.
 
 ## **3\. Returning User Experience**
 

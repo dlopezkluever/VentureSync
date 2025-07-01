@@ -1,12 +1,17 @@
 import { StyleSheet } from "react-native";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
   },
+  scrollContainer: {
+    flex: 1,
+  },
   imageContainer: {
     alignItems: "center",
     marginTop: 20,
+    marginBottom: 20,
   },
   imageViewContainer: {
     backgroundColor: "#0080C6",
@@ -26,16 +31,222 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0, 0.5)",
     ...(StyleSheet.absoluteFill as object),
   },
-
   fieldsContainer: {
-    marginTop: 20,
     padding: 20,
     flex: 1,
   },
+  fieldGroup: {
+    marginBottom: 25,
+  },
+  fieldLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#002A5C",
+    marginBottom: 8,
+  },
+  fieldDescription: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 8,
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: "#0080C6",
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    color: "#002A5C",
+    backgroundColor: "#F8F9FA",
+  },
+  textArea: {
+    minHeight: 100,
+    textAlignVertical: "top",
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#0080C6",
+    borderRadius: 8,
+    backgroundColor: "#F8F9FA",
+    overflow: "hidden",
+  },
+  picker: {
+    height: 50,
+    color: "#002A5C",
+  },
+  skillsContainer: {
+    marginTop: 8,
+  },
+  addItemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  addButton: {
+    backgroundColor: "#00338D",
+    borderRadius: 8,
+    padding: 12,
+    marginLeft: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tagsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginTop: 8,
+  },
+  tag: {
+    backgroundColor: "#E3F2FD",
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    margin: 4,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  tagText: {
+    color: "#002A5C",
+    marginRight: 8,
+    fontSize: 14,
+  },
+  urlsContainer: {
+    marginTop: 8,
+  },
+  urlItem: {
+    backgroundColor: "#F8F9FA",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  urlText: {
+    color: "#002A5C",
+    flex: 1,
+    fontSize: 14,
+  },
+  comingSoonButton: {
+    backgroundColor: "#F8F9FA",
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+    borderStyle: "dashed",
+    borderRadius: 8,
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  comingSoonText: {
+    color: "#666",
+    fontSize: 16,
+    marginRight: 12,
+  },
+  // New styles for work experience and education forms
+  experienceItem: {
+    backgroundColor: "#F8F9FA",
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: "#0080C6",
+  },
+  experienceHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  experienceTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#002A5C",
+    marginBottom: 4,
+  },
+  experienceSubtitle: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 4,
+  },
+  experienceDate: {
+    fontSize: 12,
+    color: "#999",
+    fontStyle: "italic",
+  },
+  experienceDescription: {
+    fontSize: 14,
+    color: "#444",
+    marginTop: 8,
+    lineHeight: 20,
+  },
+  formContainer: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 8,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#0080C6",
+    marginTop: 12,
+  },
+  dateContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  formButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 16,
+  },
+  cancelButton: {
+    backgroundColor: "#E0E0E0",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    flex: 0.45,
+    alignItems: "center",
+  },
+  cancelButtonText: {
+    color: "#666",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  saveButton: {
+    backgroundColor: "#00338D",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    flex: 0.45,
+    alignItems: "center",
+  },
+  saveButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  addItemButton: {
+    backgroundColor: "#F0F8FF",
+    borderWidth: 1,
+    borderColor: "#0080C6",
+    borderStyle: "dashed",
+    borderRadius: 8,
+    padding: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    marginTop: 12,
+  },
+  addItemButtonText: {
+    color: "#0080C6",
+    fontSize: 16,
+    fontWeight: "500",
+    marginLeft: 8,
+  },
+  // Legacy styles (keeping for compatibility)
   fieldItemContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E0E0E0",
   },
   fieldValueContainer: {
     flexDirection: "row",

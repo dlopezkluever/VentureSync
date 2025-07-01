@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Alert, Share } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "./styles";
 import { Post, User } from "../../../../../types";
@@ -40,6 +40,7 @@ export default function PostSingleOverlay({
   const [currentCommentsCount, setCurrentCommentsCount] = useState(
     post.commentsCount,
   );
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
     if (currentUser) {
@@ -79,6 +80,80 @@ export default function PostSingleOverlay({
     setCurrentCommentsCount((prevCount) => prevCount + 1);
   };
 
+  /**
+   * Handles the message user action
+   */
+  const handleMessageUser = () => {
+    if (currentUser?.uid === user.uid) {
+      Alert.alert("Cannot message yourself", "You cannot send a message to yourself.");
+      return;
+    }
+    
+    navigation.navigate("chatSingle", {
+      contactId: user.uid,
+    });
+  };
+
+  /**
+   * Handles the share post action
+   */
+  const handleSharePost = async () => {
+    try {
+      const shareContent = {
+        message: `Check out this post by ${user.displayName || user.email}: ${post.description}`,
+        url: post.media[0], // Share the video URL
+      };
+      
+      await Share.share(shareContent);
+    } catch (error) {
+      console.log("Error sharing post:", error);
+    }
+  };
+
+  /**
+   * Handles the bookmark post action
+   */
+  const handleBookmark = () => {
+    setIsBookmarked(!isBookmarked);
+    // TODO: Implement actual bookmark functionality with Firebase
+    console.log(`Post ${isBookmarked ? 'removed from' : 'added to'} bookmarks`);
+  };
+
+  /**
+   * Handles the thumbs down action (dislike)
+   */
+  const handleThumbsDown = () => {
+    // This is private feedback to the algorithm
+    console.log("Thumbs down - telling algorithm to show less of this content");
+    Alert.alert(
+      "Feedback Recorded", 
+      "We'll show you less content like this.",
+      [{ text: "OK" }]
+    );
+  };
+
+  /**
+   * Handles the SLOP button action (report poor quality content)
+   */
+  const handleSlopReport = () => {
+    Alert.alert(
+      "Report Content as SLOP",
+      "This will flag the content as low-quality and report it for moderation. Are you sure?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Report",
+          style: "destructive",
+          onPress: () => {
+            // TODO: Implement actual SLOP reporting functionality
+            console.log("Content reported as SLOP");
+            Alert.alert("Content Reported", "Thank you for helping keep VentureSync professional.");
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -103,6 +178,36 @@ export default function PostSingleOverlay({
             />
           )}
         </TouchableOpacity>
+
+        {/* Message User Button */}
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={handleMessageUser}
+        >
+          <Ionicons color="white" size={40} name="chatbubble-outline" />
+        </TouchableOpacity>
+
+        {/* Share Button */}
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={handleSharePost}
+        >
+          <Ionicons color="white" size={40} name="share-outline" />
+        </TouchableOpacity>
+
+        {/* Bookmark Button */}
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={handleBookmark}
+        >
+          <Ionicons 
+            color="white" 
+            size={40} 
+            name={isBookmarked ? "bookmark" : "bookmark-outline"} 
+          />
+        </TouchableOpacity>
+
+        {/* Thumbs Up (Like) Button */}
         <TouchableOpacity
           style={styles.actionButton}
           onPress={() => handleUpdateLike(currentLikeState)}
@@ -116,6 +221,16 @@ export default function PostSingleOverlay({
             {currentLikeState.counter}
           </Text>
         </TouchableOpacity>
+
+        {/* Thumbs Down Button */}
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={handleThumbsDown}
+        >
+          <Ionicons color="white" size={40} name="thumbs-down-outline" />
+        </TouchableOpacity>
+
+        {/* Comments Button */}
         <TouchableOpacity
           style={styles.actionButton}
           onPress={() =>
@@ -131,6 +246,15 @@ export default function PostSingleOverlay({
         >
           <Ionicons color="white" size={40} name={"chatbubble"} />
           <Text style={styles.actionButtonText}>{currentCommentsCount}</Text>
+        </TouchableOpacity>
+
+        {/* SLOP Report Button */}
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={handleSlopReport}
+        >
+          <Ionicons color="#ff4444" size={40} name="flag-outline" />
+          <Text style={[styles.actionButtonText, { color: "#ff4444" }]}>SLOP</Text>
         </TouchableOpacity>
       </View>
     </View>

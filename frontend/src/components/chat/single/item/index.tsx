@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity, Linking } from "react-native";
+import { Video, ResizeMode } from "expo-av";
 import { useUser } from "../../../../hooks/useUser";
 import { generalStyles } from "../../../../styles";
 import styles from "./styles";
@@ -17,6 +18,44 @@ const ChatSingleItem = ({ item }: { item: Message }) => {
   const isCurrentUser =
     FIREBASE_AUTH.currentUser && item.creator === FIREBASE_AUTH.currentUser.uid;
 
+  const openMedia = () => {
+    if (item.isMedia && item.message) {
+      Linking.openURL(item.message);
+    }
+  };
+
+  const renderMessageContent = () => {
+    if (item.isMedia) {
+      if (item.mediaType === 'video') {
+        return (
+          <TouchableOpacity onPress={openMedia} style={styles.mediaContainer}>
+            <Video
+              source={{ uri: item.message }}
+              style={styles.videoMessage}
+              useNativeControls
+              resizeMode={ResizeMode.CONTAIN}
+              shouldPlay={false}
+            />
+          </TouchableOpacity>
+        );
+      } else {
+        // Image
+        return (
+          <TouchableOpacity onPress={openMedia} style={styles.mediaContainer}>
+            <Image
+              source={{ uri: item.message }}
+              style={styles.imageMessage}
+              resizeMode="cover"
+            />
+          </TouchableOpacity>
+        );
+      }
+    } else {
+      // Text message
+      return <Text style={styles.text}>{item.message}</Text>;
+    }
+  };
+
   return (
     <View
       style={isCurrentUser ? styles.containerCurrent : styles.containerOther}
@@ -27,7 +66,7 @@ const ChatSingleItem = ({ item }: { item: Message }) => {
           source={{ uri: userData.photoURL }}
         />
       ) : (
-        <Avatar.Icon size={32} icon={"account"} />
+        <Avatar.Icon size={32} icon={"account"} style={{ backgroundColor: "#FFC20E" }} />
       )}
       <View
         style={
@@ -36,7 +75,7 @@ const ChatSingleItem = ({ item }: { item: Message }) => {
             : styles.containerTextOther
         }
       >
-        <Text style={styles.text}>{item.message}</Text>
+        {renderMessageContent()}
       </View>
     </View>
   );

@@ -24,6 +24,8 @@ export default function HomeScreen() {
   return (
     <Tab.Navigator
       barStyle={{ backgroundColor: "#FFFFFF" }}
+      activeColor="#0080C6"
+      inactiveColor="#8f8f8f"
       initialRouteName="feed"
     >
       <Tab.Screen

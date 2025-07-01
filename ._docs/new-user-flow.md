@@ -22,16 +22,20 @@
 
 ### **2\. Profile Completion Flow (The New "Onboarding")**
 
-**Goal:** Prompt a new user to complete their profile at their own convenience.
+**Goal:** Allow users to complete their profile at their own convenience using a simple, reliable edit profile system.
 
 1. **Action:** A new user, now inside the main app, navigates to their own **Profile Screen**.  
-2. **Result:** The profile screen renders. It detects that the user's profile data (like `workExperience`, `topSkills`, etc.) is missing or that the `displayName` is still the default value.  
-3. **UI Prompt:** The screen will display a prominent "Complete Your Profile" button or banner.  
-4. **Action:** The user taps the "Edit Profile" or "Complete Your Profile" button.  
-5. **Result:** The user is navigated to the **Edit Profile Screen**.  
-6. **Action:** The user fills out all their career information and taps "Save".  
-7. **Backend:** The `updateUserProfile` function is called, and all the new information is saved to their document in Firestore.  
-8. **Result:** The user is navigated back to their profile, which now displays their complete professional information.
+2. **Result:** The profile screen renders with their basic information (default username, email, empty bio, etc.).  
+3. **UI Access:** The screen displays an **"Edit Profile"** button that is **always visible** when viewing your own profile (and never visible when viewing others' profiles).  
+4. **Action:** The user taps the **"Edit Profile"** button.  
+5. **Result:** The user is navigated to the **Edit Profile Screen** where they can:
+   - Update their display name, designation, specialty, and bio
+   - Add skills and external URLs (LinkedIn, GitHub, portfolio, etc.)
+   - Change their profile picture (with Camera/Photo Library choice)
+   - See placeholders for work experience and education (coming soon)
+6. **Action:** The user fills out their professional information and taps "Save".  
+7. **Backend:** The `updateUserProfile` function saves all information to their Firestore document.  
+8. **Result:** The user returns to their profile, which now displays their complete professional information.
 
 ### **3\. Returning User Experience**
 

@@ -138,7 +138,7 @@ The app uses a **bottom tab navigation** with these main sections:
 
 ---
 
-## **6. Content Creation Flow**
+## **6. Content Creation Flow** 
 
 **A. Recording New Video**
 
@@ -164,7 +164,7 @@ The app uses a **bottom tab navigation** with these main sections:
 5. Video metadata saves to Firestore
 6. User returns to **Feed Screen**
 
-**C. Uploading from Gallery**
+**C. Uploading from Gallery** 
 
 1. On Camera Screen, user can select **Gallery option**
 2. User selects existing video from device
@@ -202,7 +202,7 @@ The app uses a **bottom tab navigation** with these main sections:
 1. User taps **"New Message"** button
 2. User searches for recipient by email
 3. User selects recipient
-4. **Chat Screen** opens
+4. **Chat Screen** opens (Like Snapchat)
 
 **C. Chat Experience**
 
@@ -234,7 +234,7 @@ The app uses a **bottom tab navigation** with these main sections:
 
 ---
 
-## **10. Key Data Flows (Current TikTok Clone)**
+## **10. Key Data Flows (From Past SnapChat Clone (6.30))**
 
 ### **User Data Structure:**
 ```typescript
@@ -287,5 +287,3 @@ Post: {
 ---
 
 This represents the **current functionality** that exists in your codebase right now. The app provides a complete social video platform experience similar to TikTok, with the main limitation being the non-functional Cloud Functions for automatic counter updates.
-
-"The way to get started is to quit talking and begin doing." - Walt Disney

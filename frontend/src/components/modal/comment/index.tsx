@@ -67,7 +67,7 @@ const CommentModal = ({
             source={{ uri: currentUser.photoURL }}
           />
         ) : (
-          <Avatar.Icon size={32} icon={"account"} />
+          <Avatar.Icon size={32} icon={"account"} style={{ backgroundColor: "#FFC20E" }} />
         )}
         <TextInput
           value={comment}

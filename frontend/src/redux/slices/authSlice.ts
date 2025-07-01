@@ -32,11 +32,32 @@ export const getCurrentUserData = createAsyncThunk(
         (res) => {
           if (res.exists()) {
             dispatch(setUserState({ currentUser: res.data(), loaded: true }));
+          } else {
+            // Handle case where user document doesn't exist
+            console.log("User document not found, creating minimal profile...");
+            // Create a minimal profile if it doesn't exist
+            createVentureSyncUserProfile({
+              uid: FIREBASE_AUTH.currentUser!.uid,
+              email: FIREBASE_AUTH.currentUser!.email || "unknown@email.com",
+              displayName: `user${Math.floor(10000000 + Math.random() * 90000000)}`,
+              designation: "Talent",
+              specialty: "General",
+              bio: "",
+            }).catch((error) => {
+              console.error("Failed to create user profile:", error);
+              // Even if creation fails, set loaded to true to prevent infinite loading
+              dispatch(setUserState({ currentUser: null, loaded: true }));
+            });
           }
         },
+        (error) => {
+          console.error("Error listening to user document:", error);
+          dispatch(setUserState({ currentUser: null, loaded: true }));
+        }
       );
     } else {
       console.log("No user is signed in.");
+      dispatch(setUserState({ currentUser: null, loaded: true }));
     }
   },
 );
@@ -58,15 +79,21 @@ export const register = createAsyncThunk(
     const userCredential = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
     const user = userCredential.user;
     
+    // Generate default username with 8 random digits
+    const generateDefaultUsername = () => {
+      const randomDigits = Math.floor(10000000 + Math.random() * 90000000);
+      return `user${randomDigits}`;
+    };
+    
     // Create VentureSync user profile in Firestore
-    // Using temporary default values - these will be updated in the onboarding flow
+    // Using temporary default values - these will be updated in the profile completion flow
     await createVentureSyncUserProfile({
       uid: user.uid,
       email: user.email || email,
-      displayName: user.displayName || "New User",
-      designation: "Talent", // Default - will be updated in onboarding
-      specialty: "General", // Default - will be updated in onboarding
-      bio: "Welcome to VentureSync!", // Default - will be updated in onboarding
+      displayName: generateDefaultUsername(),
+      designation: "Talent", // Default - will be updated in profile completion
+      specialty: "General", // Default - will be updated in profile completion
+      bio: "", // Will be updated in profile completion
     });
   },
 );

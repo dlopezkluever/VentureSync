@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import FeedScreen from "../../screens/feed";
 import ProfileScreen from "../../screens/profile";

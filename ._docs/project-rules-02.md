@@ -155,7 +155,7 @@ Every file and function must be documented to explain its purpose. We use \*\*TS
 
 \*\*Current Phase - Frontend Focus:\*\*
 1. Fix immediate issues (AsyncStorage, dependency versions)
-2. Convert TikTok clone screens to VentureSync equivalents
+2. Convert Snapchat clone screens to VentureSync equivalents
 3. Implement VentureSync onboarding flow
 4. Update navigation for professional networking context
 5. Test core user journeys without Cloud Functions
